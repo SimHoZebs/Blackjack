@@ -15,7 +15,6 @@ DoDebug(1)
 KEY_PRESS = getch
 
 class CharBase:
-
     def __init__(self, money):
         self.money = money
         self.hand = []
