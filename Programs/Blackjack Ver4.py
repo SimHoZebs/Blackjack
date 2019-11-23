@@ -6,13 +6,9 @@ Created on Tue Aug 13 19:46:09 2019
 """
 
 from random import choice
-from msvcrt import getch
-# from Zebsential import Debug, DoDebug
 from time import sleep
 
-# DoDebug(1)
-
-KEY_PRESS = getch
+###################################
 
 class CharBase:
     def __init__(self, money):
@@ -158,82 +154,7 @@ class CharBase:
     def end_turn(self):
         pass
 
-#--------------------------------------------------------------
-
-class Dealer(CharBase):
-    name = 'Dealer'
-    score_hidden1 = 0
-    score_hidden2 = 0
-    revealed = False
-
-    def hide(self):
-        self.hidden_card = choice(self.hand)
-        self.hand.remove(self.hidden_card)
-        self.hand.append("HIDDEN CARD")
-
-        if card_value[self.hand[0]] == 'special':
-            self.score_hidden1 = 11
-            self.score_hidden2 = 1
-
-        else:
-            self.score_hidden1 = self.score_hidden2 = card_value[self.hand[0]]
-
-        self.score1 = f"{self.score_hidden1} + x"
-        self.score2 = f"{self.score_hidden2} + x"
-
-    def reveal(self):
-        """
-        Swaps the hidden card with the actual card, revealing it.
-        self.calc_score() is done to change score1 and score2 to their
-        actual value.
-        """
-
-        print("Revealing HIDDEN CARD...")
-        sleep(1.4)
-
-        self.hand.append(self.hidden_card)
-        self.hand.remove("HIDDEN CARD")
-
-        print(f"The HIDDEN CARD was a {self.hidden_card}!")
-        sleep(1.4)
-        self.calc_score()   #THIS IS TO CHANGE SCORE VALUE TO TRUE SCORE
-        board.display()
-
-#-----------------------------------------------------------------
-
-class Player(CharBase):
-    name = 'Player'
-    total_bet = 0
-    decision = 0
-
-    def bet(self, bet_amount = 0):
-
-        if bet_amount == 0:
-            bet_amount = input(f"How much will you bet? (Min: $1, Max: ${self.money}) \n"
-                           "$")
-
-        bet_amount = int(bet_amount)
-
-        if bet_amount > self.money:
-            print("You can't bet more than your balance.")
-            if self.decision == 2:
-                sleep(1.4)
-                print("Betting all instead.")
-                bet_amount = self.money
-            else:
-                self.bet()
-
-        elif bet_amount < 1:
-            print("Can't bet less than $1.")
-            self.bet()
-
-        if bet_amount <= self.money:
-            print(f"Betting ${bet_amount}.")
-            self.money -= bet_amount
-            self.total_bet += bet_amount
-
-        sleep(1.4)
-#--------------------------------------------------------
+###################################
 
 class Board:
 
@@ -289,14 +210,12 @@ class Board:
               f"Player's hand: {player.hand} \n"
               f"Player score: {player.score1} or {player.score2} \n"
               f"Player's bet: ${player.total_bet}"
+              f"Player's bank: ${player.money}"
               "\n-------------------------------------")
         sleep(3)
 
     def pause(self):
         a = input("Press anything to continue \n")
-        """print("Press enter to continue...")
-        while not getch() == b'\r':
-            continue"""
 
     def reset(self):
 
@@ -329,6 +248,81 @@ class Board:
                 GAME = False
                 break
 
+###################################
+
+class Dealer(CharBase):
+    def __init__(self, money):
+        super().__init__(money)
+        self.name = 'Dealer'
+        self.score_hidden1 = 0
+        self.score_hidden2 = 0
+        self.revealed = False
+
+    def hide(self):
+        self.hidden_card = choice(self.hand)
+        self.hand.remove(self.hidden_card)
+        self.hand.append("HIDDEN CARD")
+
+        if card_value[self.hand[0]] == 'special':
+            self.score_hidden1 = 11
+            self.score_hidden2 = 1
+
+        else:
+            self.score_hidden1 = self.score_hidden2 = card_value[self.hand[0]]
+
+        self.score1 = f"{self.score_hidden1} + x"
+        self.score2 = f"{self.score_hidden2} + x"
+
+    def reveal(self):   #Swaps the hidden card with the actual card, revealing it.
+        print("Revealing HIDDEN CARD...")
+        sleep(1.4)
+
+        self.hand.append(self.hidden_card)
+        self.hand.remove("HIDDEN CARD")
+
+        print(f"The HIDDEN CARD was a {self.hidden_card}!")
+        sleep(1.4)
+        self.calc_score()   #THIS IS TO CHANGE SCORE VALUE TO TRUE SCORE
+        board.display()
+
+###################################
+
+class Player(CharBase):
+    def __init__(self, money):
+        super().__init__(money)
+        self.name = 'Player'
+        self.total_bet = 0
+        self.decision = 0
+
+    def bet(self, bet_amount = 0):
+
+        if bet_amount == 0:
+            bet_amount = input(f"How much will you bet? (Min: $1, Max: ${self.money}) \n"
+                           "$")
+
+        bet_amount = int(bet_amount)
+
+        if bet_amount > self.money:
+            print("You can't bet more than your balance.")
+            if self.decision == 2:
+                sleep(1.4)
+                print("Betting all instead.")
+                bet_amount = self.money
+            else:
+                self.bet()
+
+        elif bet_amount < 1:
+            print("Can't bet less than $1.")
+            self.bet()
+
+        if bet_amount <= self.money:
+            print(f"Betting ${bet_amount}.")
+            self.money -= bet_amount
+            self.total_bet += bet_amount
+
+        sleep(1.4)
+        
+###################################
 
 if __name__ == '__main__':
 
