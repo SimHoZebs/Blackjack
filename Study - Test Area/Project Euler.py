@@ -1,53 +1,5 @@
-maxnum = 20
-numlist = []
-rem = []
-fac = []
+"""
+thelist = "7316717653133062491922511967442657474235534919493496983520312774506326239578318016984801869478851843858615607891129494954595017379583319528532088055111254069874715852386305071569329096329522744304355766896648950445244523161731856403098711121722383113622298934233803081353362766142828064444866452387493035890729629049156044077239071381051585930796086670172427121883998797908792274921901699720888093776r657273330010533678812202354218097512545405947522435258490771167055601360483958644670632441572215539753697817977846174064955149290862569321978468622482839722413756570560574902614079729686524145351004748216637048440319989000889524345065854122758866688116427171479924442928230863465674813919123162824586178664583591245665294765456828489128831426076900422421902267105562632111110937054421750694165896040807198403850962455444362981230987879927244284909188845801561660979191338754992005240636899125607176060588611646710940507754100225698315520005593572972571636269561882670428252483600823257530420752963450"
 
-divider = 2
-wasdivided = None
-answer = 1
-
-def make_list():
-    for num in range(maxnum//2, maxnum +1):
-        numlist.append(num)
-
-make_list()
-
-while divider != maxnum//2:
-    for num in numlist:
-        print(f"dividing {num} with {divider}")
-        
-        if num//2 < divider and num != divider:
-            print(f"{num} isn't worth trying to divide by {divider}.")
-            rem.append(num)
-               
-        elif num % divider == 0:
-            print(f"{num} can be divided by {divider}!"
-                   f"\nDividing then putting {num//2} in rem")
-            rem.append(num//divider)
-            wasdivided = True
-                
-        elif num % divider != 0:
-            print(f"{num} can't be divided by {divider}."
-                   f"Putting {num} in rem.")
-            rem.append(num)
-    
-    print(f"rem: {rem}")
-    if wasdivided:
-        fac.append(divider)
-        wasdivided = 0
-    elif not wasdivided:
-        divider += 1
-        
-    numlist = rem.copy()
-    print(f"numlist: {numlist}")
-    rem = []
-
-for _ in fac:
-    answer *= _
-    
-for _ in numlist:
-    answer *= _
-
-
-print(answer)
+reuslt = 0
+"""

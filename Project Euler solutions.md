@@ -116,5 +116,108 @@ print(list_pali[-1])
 
 #####Problem 5
 ```python
+maxnum = 20
+numlist = []
+rem = []
+fac = []
 
+divider = 2
+wasdivided = None
+answer = 1
+
+for num in range(maxnum//2, maxnum +1):
+    numlist.append(num)
+
+while divider != maxnum//2:
+    for num in numlist:
+        #print(f"dividing {num} with {divider}")
+        
+        if num//2 < divider and num != divider:
+            #print(f"{num} isn't worth trying to divide by {divider}.")
+            rem.append(num)
+               
+        elif num % divider == 0:
+            #print(f"{num} can be divided by {divider}!"
+            #       f"\nDividing then putting {num//2} in rem")
+            rem.append(num//divider)
+            wasdivided = True
+                
+        elif num % divider != 0:
+            #print(f"{num} can't be divided by {divider}."
+            #       f"Putting {num} in rem.")
+            rem.append(num)
+    
+    #print(f"rem: {rem}")
+    if wasdivided:
+        fac.append(divider)
+        wasdivided = 0
+    elif not wasdivided:
+        divider += 1
+        
+    numlist = rem.copy()
+    #print(f"numlist: {numlist}")
+    rem = []
+
+for _ in fac:
+    answer *= _
+for _ in numlist:
+    answer *= _
+
+print(answer)
+```
+
+#####Problem 6
+```python
+made_list = []
+
+def make_list(num):
+    global made_list
+    
+    for _ in range(1, num +1):
+        made_list.append(_)
+
+make_list(100)
+
+res1 = 0
+for num in made_list:
+    res1 += num**2
+    
+res2 = 0
+for num in made_list:
+    res2 += num
+
+res2 = res2**2
+
+print(res2 - res1)
+```
+
+#####Problem 7
+```python
+enum = 1
+
+prime_place = 1
+
+primelist = []
+result = 0
+
+while prime_place != 10_001:
+    #print(f"Testing {enum}")
+    if enum == 1:
+        enum += 1
+    else:
+        for num in range(2, enum + 1):
+            #print(f"{enum} / {num}")
+            if enum % num == 0:
+                enum += 1
+                break
+            
+            elif num >= (enum +1)//2:
+                #print(f"{enum} is a prime")
+                primelist.append(enum)
+                result = enum
+                prime_place += 1
+                enum += 1
+                break
+                
+print(result)
 ```

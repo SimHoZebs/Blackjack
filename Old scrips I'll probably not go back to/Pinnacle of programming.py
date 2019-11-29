@@ -2,6 +2,8 @@ import turtle
 t = turtle.Turtle()
 turtle.speed(1)
 
+s = 0
+
 def yeet():
     re = int(input("Type 1 to repeat & 2 to end: "))
     global s
