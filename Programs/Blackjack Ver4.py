@@ -209,7 +209,7 @@ class Board:
               "\n \n \n \n \n"
               f"Player's hand: {player.hand} \n"
               f"Player score: {player.score1} or {player.score2} \n"
-              f"Player's bet: ${player.total_bet}"
+              f"Player's bet: ${player.total_bet} \n"
               f"Player's bank: ${player.money}"
               "\n-------------------------------------")
         sleep(3)
@@ -293,35 +293,48 @@ class Player(CharBase):
         self.name = 'Player'
         self.total_bet = 0
         self.decision = 0
+        self.betted = False
 
     def bet(self, bet_amount = 0):
+        #Charbase.play() calls this method.
 
         if bet_amount == 0:
             bet_amount = input(f"How much will you bet? (Min: $1, Max: ${self.money}) \n"
                            "$")
 
-        bet_amount = int(bet_amount)
+        while not self.betted:
 
-        if bet_amount > self.money:
-            print("You can't bet more than your balance.")
-            if self.decision == 2:
-                sleep(1.4)
-                print("Betting all instead.")
-                bet_amount = self.money
-            else:
+            try:
+                bet_amount = int(bet_amount)
+            except ValueError:
+                print("Bet again.")
                 self.bet()
+                continue
 
-        elif bet_amount < 1:
-            print("Can't bet less than $1.")
-            self.bet()
+            if bet_amount > self.money:
+                print("You can't bet more than your balance.")
+                if self.decision == 2:  #This is when bet() is called from Charbase.play()
+                    sleep(1.4)
+                    print("Betting all instead.")
+                    bet_amount = self.money
+                else:
+                    self.bet()
+                    continue
 
-        if bet_amount <= self.money:
-            print(f"Betting ${bet_amount}.")
-            self.money -= bet_amount
-            self.total_bet += bet_amount
+            elif bet_amount < 1:
+                print("Can't bet less than $1.")
+                self.bet()
+                continue
 
-        sleep(1.4)
+            if bet_amount <= self.money:
+                print(f"Betting ${bet_amount}.")
+                self.money -= bet_amount
+                self.total_bet += bet_amount
+                self.betted = True
+                
+            sleep(1.4)
         
+
 ###################################
 
 if __name__ == '__main__':
