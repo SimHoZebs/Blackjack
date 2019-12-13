@@ -28,7 +28,7 @@ def error_prevention():
             guess = int(guess)
             is_string = False
 
-num = random.randint(1, 100)
+num = 40
 list1 = []
 list1_counter = 0
 
@@ -57,13 +57,13 @@ while guess != num:
     error_prevention()
     list1.append(guess)
 
-    """
+    
     #Debugging prints
     print("\nRandom number:", num)
     print("Difference:", difference)
     print("Last number:", list1[list1_counter])
     print("Previous difference:", abs(num - list1[list1_counter]))
-    """
+    
     
     if guess == num:
         print(f"You got it! In {len(list1)} attempts!")

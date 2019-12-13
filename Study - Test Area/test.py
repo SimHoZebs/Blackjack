@@ -1,14 +1,49 @@
-class TestClass:
+def check_loss_old(self):
 
-	def __init__(self):
-		self.start_url = [self.ask_user()]
+    if self.score1_in_CharBase > 21:   #WHEN NAME IS PLAYER
+       print(f"{self.name}'s score is over 21. {self.name} loses!")
+       main.loser = self.name
+       delay()
 
-	def ask_user(self):
-		url = "Examplelink.com"
-		return url
+    elif playing_char == dealer:
+        if playing_char.score1_in_CharBase >= 17:
+            if playing_char.score1_in_CharBase > player.score1_in_CharBase:
+                print("Dealer has a higher score. Dealer wins!")
+                main.loser = 'Player'
+            elif playing_char.score1_in_CharBase < player.score1_in_CharBase:
+                print("Dealer has a lower score. Player wins!")
+                main.loser = self.name
+            elif playing_char.score1_in_CharBase == player.score1_in_CharBase:
+                print("A draw! Player gets their money back.")
+                main.loser == 'everyone'
 
-test1 = TestClass()
+            delay()
 
-test1.ask_user()
+        elif self.score1_in_CharBase < 17:
+            pass
 
-print(test1.start_url)
+    if main.loser == 'Dealer':
+        dealer.money_in_CharBase -= player.total_bet_in_Player
+        print(f"Dealer loses ${player.total_bet_in_Player}."
+              f"(Total: ${dealer.money_in_CharBase})")
+        delay()
+        player.money_in_CharBase += player.total_bet_in_Player*2
+        print(f"Player wins double the bet, ${player.total_bet_in_Player*2}."
+              f"(Total: ${player.money_in_CharBase})")
+        delay()
+        board.pause()
+
+    elif main.loser == "Player":
+        print(f"Player loses ${player.total_bet_in_Player}."
+              f"(Total: ${player. money})")
+        delay()
+        dealer.money_in_CharBase += player.total_bet_in_Player
+        print(f"Dealer wins ${player.total_bet_in_Player}."
+              f"(Total: ${dealer.money_in_CharBase})")
+        delay()
+        board.pause()
+
+    elif main.loser == "everyone":
+        player.money_in_CharBase += player.total_bet_in_Player
+        delay()
+        board.pause()
