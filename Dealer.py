@@ -1,15 +1,20 @@
-from Blackjack_CharBase import CharBase
-from Blackjack_Board import Board,delay
+from Board import Board,delay
 
+from CharBase import CharBase
+###
 from random import choice
 
 class Dealer(CharBase):
+
     def __init__(self, money):
         super().__init__(money)
         self.name = 'Dealer'
         self.revealed = False
 
     def hide_card(self):
+        """
+        Chooses a random card in hand and replaces it with "HIDDEN CARD".
+        """
         self.hidden_card = choice(self.hand)
         self.hand.remove(self.hidden_card)
         self.hand.append("HIDDEN CARD")
@@ -24,7 +29,10 @@ class Dealer(CharBase):
         self.score1_in_CharBase = f"{score1_hidden} + x"
         self.score2_in_CharBase = f"{score2_hidden} + x"
 
-    def reveal_card(self):   #Swaps the hidden card with the actual card, revealing it.
+    def reveal_card(self):
+        """
+        Swaps the hidden card with the actual card, revealing it.
+        """
         print("Revealing HIDDEN CARD...")
         delay(1.4)
 
@@ -33,13 +41,3 @@ class Dealer(CharBase):
 
         print(f"The HIDDEN CARD was a {self.hidden_card}!")
         delay(1.4)
-
-    def play(self):
-        if self.revealed == False:
-            self.revealed = True
-            self.reveal()
-
-        if self.score1_in_CharBase >= 17:
-            self.decision = 3
-        else:
-            self.decision = 1

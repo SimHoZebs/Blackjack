@@ -5,23 +5,26 @@ Created on Tue Aug 13 19:46:09 2019
 @author: Zebs
 """
 
-from Blackjack_CharBase import CharBase
-from Blackjack_Player import Player
-from Blackjack_Dealer import Dealer
-from Blackjack_Board import Board,delay
-#from Blackjack_Data import Data
+from Board import Board,delay
 
+from CharBase import CharBase
+
+from Player import Player
+from Dealer import Dealer
+###
 import ipdb
-from time import sleep
 
 class Main:
-
+    """
+    Lowest level class that processes and converts data between all classes.
+    """
+    
     def __init__(self):
         self.playing_char = None
         self.char_list = [player, dealer]
         self.loser = None
         
-    def game_setup(self):
+    def value_reset(self):
 
         if GAME == True:
             board.create_deck()
@@ -47,14 +50,22 @@ class Main:
             pass
 
     def check_game_over(self):
-        for names in {player, dealer}:
+        """
+        Checks if any characters are broke.
+        """
+        for names in self.char_list:
             if names.money_in_CharBase == 0:
-                print(f"{names.name} is broke. {names.name} loses!")
                 global GAME
                 GAME = False
+
+                print(f"{names.name} is broke. {names.name} loses!")
+                
                 break
 
     def display(self):
+        """
+        Outputs game interface.
+        """
         print("------------------------------------- \n"
               f"Dealer's hand: {dealer.hand} \n"
               f"Dealer's score: {dealer.score1_in_CharBase} or {dealer.score2_in_CharBase} \n"
@@ -68,7 +79,9 @@ class Main:
         delay(3)
 
     def check_loss(self):
-
+        """
+        Checks if any character score is higher than 21, and if so, assigns them to self.loser.
+        """
         for char in self.char_list:
             if type(char.score1_in_CharBase) is str:
                 pass
@@ -82,13 +95,17 @@ class Main:
                 delay()
 
     def game_result(self):
-        
+        """
+        Checks self.loser and compares score values to see who lost and who won.
+        Also adds and subtracts cash from characters according to that result.
+        """
         if self.loser == None:
-
             if player.score1_in_CharBase > dealer.score1_in_CharBase:
                 self.loser = dealer
+
             elif player.score1_in_CharBase < dealer.score1_in_CharBase:
                 self.loser = player
+
             else:   #is a draw
                 print("It's a draw!")
                 player.money_in_CharBase += player.total_bet_in_Player
@@ -110,7 +127,20 @@ class Main:
             delay()
             print(f"{other_char.name} wins ${player.total_bet_in_Player}.")
 
-    def turn_switch(self):  #unused atm
+    def draw_calc_display(self):
+        """
+        Draws card, calculates character score, displays interface, then check character if they should be a loser.
+        """
+
+        self.playing_char.draw_card()        
+        self.playing_char.calc_score()
+        self.display()
+        self.check_loss()
+
+    def turn_switch(self):
+        """
+        Unused feature at the moment.
+        """
 
         while True:
 
@@ -124,20 +154,12 @@ class Main:
 
                 yield self.playing_char
 
-    def draw_calc_display(self):
-
-        self.playing_char.draw_card()
-        
-        self.playing_char.calc_score()
-        self.display()
-        self.check_loss()
-
 if __name__ == '__main__':
+    #Object creation
     board = Board()
     player = Player(100)
     dealer = Dealer(100)
     main = Main()
-    #data = Data()
 
     #GLOBAL VALUES
     GAME = True
@@ -145,7 +167,7 @@ if __name__ == '__main__':
     while GAME == True:
 
         main.check_game_over()
-        main.game_setup()
+        main.value_reset()
         
         if GAME == False:
             break
@@ -177,44 +199,44 @@ if __name__ == '__main__':
         main.playing_char = player             
 
         while main.playing_char == player:
-
-            player.play()
-
+            
+            player.make_decision()
+            
             if player.decision == 1:
-
                 main.draw_calc_display()
 
                 if main.loser == None:
                     player.decided = False
                     continue
+                else:
+                    break
 
-            elif player.decision == 2:
+            elif player.decision == 2:                
                 player.betted_in_Player = False
 
                 player.bet(player.total_bet_in_Player)
-
                 main.draw_calc_display()
-
-                main.playing_char = dealer
+                break
 
             elif player.decision == 3:
-                main.playing_char = dealer
+                break
 
         if main.loser != None:
             main.game_result()
             continue
 
-        while main.playing_char == dealer:
-            dealer.reveal_card()
-            dealer.calc_score()
+        main.playing_char = dealer
 
-            main.display()
-            
-            main.check_loss()
+        dealer.reveal_card()
+        dealer.calc_score()
 
-            while dealer.score1_in_CharBase < 17:                
-                main.draw_calc_display()
+        main.display()
+        
+        main.check_loss()
 
-            main.playing_char = None
+        while dealer.score1_in_CharBase < 17:                
+            main.draw_calc_display()
+
+        main.playing_char = None
 
         main.game_result()
