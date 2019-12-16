@@ -17,15 +17,16 @@ import ipdb
 class Main:
     """
     Lowest level class that processes and converts data between all classes.
-    """
-    
+    """    
     def __init__(self):
         self.playing_char = None
         self.char_list = [player, dealer]
         self.loser = None
         
     def value_reset(self):
-
+        """
+        Resets all variable value to their original state, except CharBase.money
+        """
         if GAME == True:
             board.create_deck()
             board.generate_CARD_VALUE()
@@ -53,12 +54,13 @@ class Main:
         """
         Checks if any characters are broke.
         """
-        for names in self.char_list:
-            if names.money_in_CharBase == 0:
+        for char in self.char_list:
+            if char.money_in_CharBase <= 0:
                 global GAME
                 GAME = False
 
-                print(f"{names.name} is broke. {names.name} loses!")
+                print(f"{char.name} is broke. {char.name} loses!")
+                delay()
                 
                 break
 
@@ -123,15 +125,17 @@ class Main:
                 player.money_in_CharBase += player.total_bet_in_Player*2
                 dealer.money_in_CharBase -= player.total_bet_in_Player
 
+            print(f"{self.loser.name} loses!")
+            delay()
             print(f"{self.loser.name} loses ${player.total_bet_in_Player}.")
             delay()
             print(f"{other_char.name} wins ${player.total_bet_in_Player}.")
+            delay()
 
     def draw_calc_display(self):
         """
         Draws card, calculates character score, displays interface, then check character if they should be a loser.
         """
-
         self.playing_char.draw_card()        
         self.playing_char.calc_score()
         self.display()
@@ -141,7 +145,6 @@ class Main:
         """
         Unused feature at the moment.
         """
-
         while True:
 
             if self.playing_char == self.char_list[0]:
