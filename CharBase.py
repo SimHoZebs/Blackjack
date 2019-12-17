@@ -1,10 +1,11 @@
-from Blackjack_Board import Board,delay
+from Board import Board,delay
 
 from random import choice
 from time import sleep
 import ipdb
 
 class CharBase:
+
     def __init__(self, money):
         self.money_in_CharBase = money
         self.hand = []
@@ -14,10 +15,10 @@ class CharBase:
         self.score2_in_CharBase = 0     #SCORE VALUE FOR WHEN ACE == 1
 
     def draw_card(self, amount=1):
-
-        cycle = 0
-
-        while cycle != amount:
+        """
+        Draws a random card from Board.deck. Repeat for amount.
+        """
+        for _ in range(amount):
             drawn_card = choice(Board.deck)
             Board.deck.remove(drawn_card)
             self.hand.append(drawn_card)
@@ -28,14 +29,16 @@ class CharBase:
             else:
                 print(f"{self.name} draws {drawn_card}.")
 
-            cycle += 1
             delay(1.4)
 
     def calc_score(self):
+        """
+        Adds value of all cards in hand and assigns it to their scores.
+        Score resets before each calc. Need to change it.
+        """
         score1 = 0
         score2 = 0
         ace_in_hand = 0
-
         
         for cards in self.hand:
             try:
@@ -62,5 +65,3 @@ class CharBase:
 
     def bet_version6(self):
         pass
-        
-    #Score resets before each calc. Need to change it.

@@ -11,7 +11,9 @@ class Board:
     CARD_VALUE = {}
 
     def create_deck(self):
-
+        """
+        Creates cards then appends each in to deck.
+        """
         for shape in ("Cloves ", "Hearts ", "Spades ", "Diamonds "):
             #Deck creation with pure numbers
             for num in range(1, 14):
@@ -28,7 +30,9 @@ class Board:
                     self.deck.append(shape+str(num))
 
     def generate_CARD_VALUE(self):
-
+        """
+        Keys are added to CARD_VALUE, where key = cards and their value = items.
+        """
         for card in self.deck:
 
             try:
@@ -42,9 +46,3 @@ class Board:
                     self.CARD_VALUE[card] = "SPECIAL"
                 else:
                     self.CARD_VALUE[card] = 10
-
-    def pause(self):
-        a = input("Press anything to continue \n")
-
-    def play_result():
-        pass
