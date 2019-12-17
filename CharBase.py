@@ -23,7 +23,7 @@ class CharBase:
             Board.deck.remove(drawn_card)
             self.hand.append(drawn_card)
 
-            if self.name == "Dealer" and len(self.hand) < 2:
+            if self.name == "Dealer" and len(self.hand) <= 2:
                 print("Dealer draws a card.")
 
             else:

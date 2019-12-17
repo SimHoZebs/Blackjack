@@ -31,12 +31,13 @@ class Main:
             board.create_deck()
             board.generate_CARD_VALUE()
             self.loser = None
+            self.playing_char = None
             
             player.hand = []
             player.decision = 0
             player.decided = False
             player.total_bet_in_Player = 0
-            player.betted_in_Player = False
+            player.has_betted = False
             try:
                 del bet_amount_in_Player
             except UnboundLocalError:   #bet_amount_in_Player does not exist
@@ -117,11 +118,18 @@ class Main:
             index = self.char_list.index(self.loser)
             other_char = self.char_list[abs(index - 1)]
 
+            if player.decision == 4:
+                player.total_bet_in_Player = player.total_bet_in_Player//2
+                player.money_in_CharBase += player.total_bet_in_Player
+                print("Player surrenders, only losing half the bet.")
+                delay()
+
             if self.loser == player:
                 dealer.money_in_CharBase += player.total_bet_in_Player
 
-            if self.loser == dealer:
+            else: #self.loser == dealer
                 print(f"{player.name} gets their bet, ${player.total_bet_in_Player} back!")
+                delay()
                 player.money_in_CharBase += player.total_bet_in_Player*2
                 dealer.money_in_CharBase -= player.total_bet_in_Player
 
@@ -182,26 +190,20 @@ if __name__ == '__main__':
 
             delay()
 
-        #CARD DRAW PHASE
-        main.playing_char = player
+        player.bet()
 
-        main.playing_char.bet()
-        main.playing_char.draw_card(2)
-        main.playing_char.calc_score()
+        for char in main.char_list:
+            char.draw_card(2)
+            char.calc_score()
 
-        main.playing_char = dealer
-
-        main.playing_char.draw_card(2)
-        main.playing_char.calc_score()
-        main.playing_char.hide_card()
-        #End of CARD DRAW PHASE
+        dealer.hide_card()
 
         #show BOARD
         main.display()
 
-        main.playing_char = player             
+        main.playing_char = player           
 
-        while main.playing_char == player:
+        while main.loser == None:
             
             player.make_decision()
             
@@ -215,13 +217,15 @@ if __name__ == '__main__':
                     break
 
             elif player.decision == 2:                
-                player.betted_in_Player = False
-
                 player.bet(player.total_bet_in_Player)
                 main.draw_calc_display()
                 break
 
             elif player.decision == 3:
+                break
+
+            elif player.decision == 4:
+                main.loser = player
                 break
 
         if main.loser != None:
@@ -239,7 +243,5 @@ if __name__ == '__main__':
 
         while dealer.score1_in_CharBase < 17:                
             main.draw_calc_display()
-
-        main.playing_char = None
 
         main.game_result()
