@@ -1,5 +1,3 @@
 # Specify filepatterns you want git to ignore.
-Study - Test Area/
-.vs/
 __pycache__/
 test.py
